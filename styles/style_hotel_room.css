@@ -3,6 +3,7 @@
       }
 /* Styles for the popup */
 .popup {
+    z-index: 1;
     display: none;
     /* Hide the popup by default */
     position: fixed;
@@ -11,9 +12,28 @@
     transform: translate(-50%, -50%);
     background-color: #ffffff;
     padding: 20px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    /* Shadow and elevation */
+}
+
+.popup input[type="text"],
+.popup input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+    border: 1px solid #ccc;
+}
+
+.popup button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
 }
       .room-info h4 {
           margin-bottom: 5px;
