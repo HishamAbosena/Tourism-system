@@ -212,6 +212,8 @@ $(document).on("click", ".thumbnail", function () {
   $(".carousel-item.active img").attr("src", imgSrc); // Set the source of the main carousel image
 });
 
+
+
 // Function to initialize datepicker
 function initializeDatepicker() {
   $("#arrivalDate").datepicker({
