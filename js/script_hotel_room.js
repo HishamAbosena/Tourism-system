@@ -153,7 +153,7 @@ document.getElementById('main').innerHTML = ` <!-- Main Content -->
             <button
               type="button"
               class="btn btn-primary booking-button flex-grow-1"
-              style="border-radius: 25px"
+              style="border-radius: 25px" id="openPopupButton"
             >
               Book Now
             </button>
@@ -211,8 +211,37 @@ $(document).on("click", ".thumbnail", function () {
   var imgSrc = $(this).attr("src"); // Get the source of the clicked thumbnail image
   $(".carousel-item.active img").attr("src", imgSrc); // Set the source of the main carousel image
 });
+// Function to handle click on button
+$(document).on("click", "#openPopupButton", function () {
+    // Check if both arrival and departure dates are filled
+    if ($("#arrivalDate").val() && $("#departureDate").val()) {
+        openPopup();
+    } else {
+        // If dates are not filled, alert the user or handle it in another way
+        alert("Please select arrival and departure dates first.");
+        // Optionally, you can focus on the date fields or perform other actions to prompt the user to fill them.
+    }
+});
 
 
+
+    // Get references to the button and the popup
+    var closePopupButton = document.getElementById('closePopupButton');
+    var popup = document.getElementById('popup');
+
+    // Function to open the popup
+    function openPopup() {
+        popup.style.display = 'block';
+    }
+
+    // Function to close the popup
+    function closePopup() {
+        popup.style.display = 'none';
+    }
+
+
+    // Event listener to close the popup when the close button is clicked
+    closePopupButton.addEventListener('click', closePopup);
 
 // Function to initialize datepicker
 function initializeDatepicker() {

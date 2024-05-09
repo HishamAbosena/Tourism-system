@@ -1,7 +1,20 @@
       .room-info {
           text-align: right;
       }
-
+/* Styles for the popup */
+.popup {
+    display: none;
+    /* Hide the popup by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
       .room-info h4 {
           margin-bottom: 5px;
       }
