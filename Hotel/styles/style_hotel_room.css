@@ -1,0 +1,261 @@
+/* #main{
+    position: relative;
+    top: 70px;
+ } */
+
+.room-info {
+    text-align: right;
+}
+
+/* Styles for the popup */
+/* Styles for the popup */
+.popup {
+    z-index: 1;
+    display: none;
+    /* Hide the popup by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    /* Shadow and elevation */
+    width: 300px;
+    /* Set a fixed width for the popup */
+}
+
+#priceSpan {
+    font-size: 1.2em;
+    /* Adjust font size */
+    color: green;
+    /* Change text color */
+    font-weight: bold;
+    /* Make text bold */
+    /* Add any additional styling you want */
+}
+
+#priceContainer {
+    font-size: 1.2em;
+    /* Adjust font size */
+    color: green;
+    /* Change text color */
+    font-weight: bold;
+    /* Make text bold */
+    /* Add any additional styling you want */
+}
+
+.popup input[type="text"],
+.popup input[type="number"],
+.popup input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding-left: 40px;
+}
+
+
+.field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.field input {
+    padding-left: 30px;
+    /* Space for the icon */
+}
+
+.field .icon {
+    justify-content: center;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#closePopupButton {
+    position: absolute;
+    top: 10px;
+    /* Adjust top position */
+    right: 10px;
+    /* Adjust right position */
+    padding: 0;
+    /* Remove padding */
+    border: none;
+    background-color: transparent;
+    /* Transparent background */
+    cursor: pointer;
+}
+
+#closePopupButton {
+    font-size: 24px;
+    /* Adjust icon size */
+    color: #555;
+    /* Icon color */
+}
+
+.popup p {
+    margin-bottom: 10px;
+}
+
+.room-info h4 {
+    margin-bottom: 5px;
+}
+
+/* Custom CSS styles */
+.container {
+    border-radius: 10px;
+    /* Apply rounded corners */
+    border: 1px solid #ccc;
+    /* Add a border */
+    padding: 20px;
+    /* Add padding */
+    position: relative;
+    top: 50px;
+    /* Position relative for absolute positioning */
+    width: 80%;
+    /* Extend container width */
+    margin: 0 auto;
+    /* Center the container */
+}
+
+.custom-container {
+    border: 3px;
+    /* Dark border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Shadow effect */
+    padding: 20px;
+    /* Padding */
+    border-radius: 15px;
+    /* Rounded corners */
+}
+
+.room-info {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.room-info h4 {
+    margin-bottom: 5px;
+}
+
+.room-info i {
+    margin-right: 5px;
+}
+
+/* Modern rounded circle arrows */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    /* Adjust width */
+    height: 40px;
+    /* Adjust height */
+    border-radius: 50%;
+    /* Make the arrows rounded */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Background color */
+    border: none;
+    /* Remove border */
+    opacity: 0.8;
+    /* Set opacity */
+    top: 50%;
+    /* Move arrows to the vertical center */
+    transform: translateY(-50%);
+    /* Adjust vertical position */
+    box-shadow: none;
+    /* Remove shadow */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 20px;
+    /* Adjust icon width */
+    height: 20px;
+    /* Adjust icon height */
+    border-radius: 50%;
+    /* Make the icon rounded */
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+    /* Increase opacity on hover */
+}
+
+/* Style for main carousel images */
+.carousel-item img {
+    width: auto;
+    height: 450px;
+    object-fit: cover;
+    /* Ensure the image covers the entire container */
+
+    /* Allow width to adjust based on aspect ratio */
+}
+
+/* Style for thumbnail images */
+.thumbnail {
+    width: auto;
+    /* Adjust thumbnail width */
+    height: 60px;
+    /* Keep aspect ratio */
+    cursor: pointer;
+    /* Change cursor to pointer on hover */
+    margin-right: 10px;
+    margin-bottom: 10px;
+    /* Add some margin between thumbnails */
+}
+
+/* Highlight the selected thumbnail */
+.thumbnail.active {
+    border: 2px solid #007bff;
+    /* Add border to highlight */
+}
+
+/* Additional images */
+.additional-images {
+    margin-top: 20px;
+}
+
+/* Style for feature boxes */
+.feature-box {
+    /* background-color: #f8f9fa; */
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box h4 {
+    margin-bottom: 0;
+}
+
+/* Hotel description */
+.hotel-description {
+    margin-top: 20px;
+}
+
+/* Room features */
+.room-features {
+    margin-top: 20px;
+}
+
+.price-box {
+    background-color: green;
+    /* Blue background color */
+    color: #fff;
+    /* White text color */
+    padding: 5px 10px;
+    /* Reduced padding */
+    border-radius: 30px;
+    /* Rounded corners */
+    text-align: center;
+    /* Center align text */
+    margin-bottom: 30px;
+    /* Add some margin below */
+    margin-right: auto;
+    /* Auto margin on the right side */
+    display: inline-block;
+    /* Make the box inline */
+}

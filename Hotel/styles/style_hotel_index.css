@@ -1,3 +1,7 @@
+ .container{
+    position: relative;
+    top: 70px;
+ }
  .card {
      border: none;
      border-radius: 10px;

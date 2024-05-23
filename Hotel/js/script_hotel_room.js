@@ -5,13 +5,17 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const roomId = urlParams.get('room_id');
 // const roomId = 1;
+let fetchedData;
+let total_price;
 
 // Make an AJAX request to fetch data
 fetch(`../php/backend/fetch_room_data.php?room_id=${roomId}`)
   .then(response => response.json())
   .then(data => {
     // Update HTML elements with fetched data
-    // document.getElementById('roomPrice').innerHTML = "<h5 class='card-title'>$" + data.Price + "/night</h5>";
+// priceSpan.textContent = data.price; // Assuming the response contains a 'price' field
+  fetchedData = data;
+
 document.getElementById('main').innerHTML = ` <!-- Main Content -->
     <div class="container mt-5 custom-container">
       <!-- Card with image and details -->
@@ -112,9 +116,7 @@ document.getElementById('main').innerHTML = ` <!-- Main Content -->
             <h5 class="card-title">$${data.Price}/night</h5>
           </div>
           <!-- Date pickers -->
-          <div class="row mt-3" style="margin-bottom: 30px">
-            <div class="col">
-              <label for="arrivalDate">Arrival Date</label>
+            <div class="col"style="margin-top: 20px;" >
               <div class="input-group">
                 <input
                   type="text"
@@ -130,8 +132,7 @@ document.getElementById('main').innerHTML = ` <!-- Main Content -->
                 </div>
               </div>
             </div>
-            <div class="col">
-              <label for="departureDate">Departure Date</label>
+            <div class="col"style="margin-top: 20px;" >
               <div class="input-group">
                 <input
                   type="text"
@@ -147,13 +148,12 @@ document.getElementById('main').innerHTML = ` <!-- Main Content -->
                 </div>
               </div>
             </div>
-          </div>
           <!-- Booking button -->
           <div class="row justify-content-end red-row">
             <button
               type="button"
               class="btn btn-primary booking-button flex-grow-1"
-              style="border-radius: 25px" id="openPopupButton"
+              style="border-radius: 25px; margin-top: 40px;" id="openPopupButton"
             >
               Book Now
             </button>
@@ -165,7 +165,7 @@ document.getElementById('main').innerHTML = ` <!-- Main Content -->
     </div>
 
     <!-- <h2 class="text-center">Room Features</h2> -->
-    <div class="row justify-content-center" style="margin-top: 10px">
+    <div class="row justify-content-center" style="margin-top: 60px">
       <div class="col-md-3 mx-2 mb-2">
         <!-- Feature Box 1 -->
         <div class="feature-box text-center p-3">
@@ -215,7 +215,35 @@ $(document).on("click", ".thumbnail", function () {
 $(document).on("click", "#openPopupButton", function () {
     // Check if both arrival and departure dates are filled
     if ($("#arrivalDate").val() && $("#departureDate").val()) {
-        openPopup();
+        calculateTotalPrice()
+          // AJAX request to check for clashes
+         $.ajax({
+        url: '../php/backend/check_clashes.php',
+        type: 'POST',
+        data: {
+            arrival_date: $("#arrivalDate").val(),
+            departure_date: $("#departureDate").val(),
+            room_id: roomId
+        },
+        success: function(response) {
+            // Handle the response from the server
+            if (response === 'clash') {
+                // Show SweetAlert for clash
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Booking Clash',
+                    text: 'Booking clashes with existing booking!'
+                });
+            } else {
+                // Proceed with the booking
+                openPopup();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error checking for clashes:', error);
+        }
+    });
+        
     } else {
         // If dates are not filled, alert the user or handle it in another way
         alert("Please select arrival and departure dates first.");
@@ -223,7 +251,36 @@ $(document).on("click", "#openPopupButton", function () {
     }
 });
 
+function calculateTotalPrice() {
+    // Get the values of arrival and departure dates
+    var arrivalDate = $("#arrivalDate").val();
+    var departureDate = $("#departureDate").val();
 
+    // Convert the dates to JavaScript Date objects
+    var arrival = new Date(arrivalDate);
+    var departure = new Date(departureDate);
+
+    // Calculate the number of nights
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    var numberOfNights = Math.round(Math.abs((arrival - departure) / oneDay));
+
+    // Get the price per night
+    var pricePerNight = parseFloat(fetchedData.Price);
+
+    // Calculate the total price
+    var totalPrice = numberOfNights * pricePerNight;
+
+    // Display the total price
+     //$("#priceSpan").text(totalPrice);
+    document.getElementById('priceSpan').innerHTML = "$" +totalPrice ;
+    total_price = totalPrice;
+}
+
+// Call the function when the departure date changes
+$("#departureDate").on("change", calculateTotalPrice);
+
+// Call the function when the arrival date changes
+$("#arrivalDate").on("change", calculateTotalPrice);
 
     // Get references to the button and the popup
     var closePopupButton = document.getElementById('closePopupButton');
@@ -245,12 +302,127 @@ $(document).on("click", "#openPopupButton", function () {
 
 // Function to initialize datepicker
 function initializeDatepicker() {
+  // Get today's date
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; // January is 0!
+  var yyyy = today.getFullYear();
+  if(dd < 10){
+    dd = '0' + dd;
+  } 
+  if(mm < 10){
+    mm = '0' + mm;
+  } 
+  var todayFormatted = mm + '/' + dd + '/' + yyyy;
+
+  // Initialize datepickers
   $("#arrivalDate").datepicker({
     format: "mm/dd/yyyy",
     autoclose: true,
+    startDate: todayFormatted, // Set minimum date to today
   });
+
   $("#departureDate").datepicker({
     format: "mm/dd/yyyy",
     autoclose: true,
+    startDate: todayFormatted, // Set minimum date to today
+  });
+
+  // Update departure date picker to set the start date as arrival date + 1 day
+  $("#arrivalDate").on("change", function() {
+    var arrivalDate = $("#arrivalDate").datepicker("getDate");
+    var nextDay = new Date(arrivalDate.getTime() + (24 * 60 * 60 * 1000)); // Add one day in milliseconds
+    $("#departureDate").datepicker("setStartDate", nextDay);
+    
+    // Clear departure date when arrival date changes
+    $("#departureDate").datepicker("setDate", null);
   });
 }
+
+
+$(document).on("click", "#confirmBooking", function () {
+    // Get form data
+    var roomID = roomId; // Assuming roomId is defined somewhere
+    var arrivalDate = $("#arrivalDate").val();
+    var departureDate = $("#departureDate").val();
+    var phone = $("#phone").val();
+    var cardNumber = $("#cardNumber").val();
+    var cardHolder = $("#cardholder").val();
+    var expiryDate = $("#expirydate").val();
+    var cvv = $("#cvv").val();
+
+    // AJAX request to send data to server
+   $.ajax({
+    url: '../php/backend/process_booking_credit.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+        cardNumber: cardNumber,
+        cardHolder: cardHolder,
+        expiryDate: expiryDate,
+        phone: phone,
+       cvv: cvv
+    },
+    success: function(response) {
+        if (response.success) {
+            
+        } else {
+           
+        }
+    },
+    error: function(xhr, status, error) {
+        // If there was an error with the AJAX request itself
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while processing your request.'
+        });
+        console.error(xhr.responseText);
+    }
+});
+    // AJAX request to send data to server
+   $.ajax({
+    url: '../php/backend/process_booking.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+        roomID: roomID,
+        arrivalDate: arrivalDate,
+        departureDate: departureDate,
+        phone: phone,
+        cardNumber: cardNumber,
+        TotalPrice: total_price
+    },
+    success: function(response) {
+        if (response.success) {
+          closePopup()
+            // If booking was successful, display success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Booking Confirmed',
+                // text: response.message
+            });
+            
+        } else {
+           closePopup()
+            // If booking failed, display error message
+            Swal.fire({
+                icon: 'error',
+                title: 'Booking Failed',
+                // text: response.message
+            });
+           
+        }
+    },
+    error: function(xhr, status, error) {
+        // If there was an error with the AJAX request itself
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while processing your request.'
+        });
+        console.error(xhr.responseText);
+    }
+});
+
+});

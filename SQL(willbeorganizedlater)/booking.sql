@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2024 at 11:17 PM
+-- Generation Time: May 10, 2024 at 11:48 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,43 @@ SET time_zone = "+00:00";
 --
 -- Database: `booking`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking`
+--
+
+CREATE TABLE `booking` (
+  `BookingNo` int(11) NOT NULL,
+  `RoomID` int(11) DEFAULT NULL,
+  `ArrivalDate` varchar(10) DEFAULT NULL,
+  `DepartureDate` varchar(10) DEFAULT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `cardNumber` varchar(16) DEFAULT NULL,
+  `TotalPrice` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`BookingNo`, `RoomID`, `ArrivalDate`, `DepartureDate`, `Phone`, `cardNumber`, `TotalPrice`) VALUES
+(9, 2, '05/15/2024', '05/22/2024', '01421412412', NULL, 1050.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `creditcard`
+--
+
+CREATE TABLE `creditcard` (
+  `CardNumber` varchar(16) NOT NULL,
+  `CardHolderName` varchar(100) DEFAULT NULL,
+  `ExpiryDate` date DEFAULT NULL,
+  `CVV` varchar(4) DEFAULT NULL,
+  `Phone` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -92,6 +129,20 @@ INSERT INTO `rooms` (`RoomID`, `Price`, `HasKitchen`, `NumBedrooms`, `NumBathroo
 --
 
 --
+-- Indexes for table `booking`
+--
+ALTER TABLE `booking`
+  ADD PRIMARY KEY (`BookingNo`),
+  ADD KEY `RoomID` (`RoomID`),
+  ADD KEY `fk_credit_card` (`cardNumber`);
+
+--
+-- Indexes for table `creditcard`
+--
+ALTER TABLE `creditcard`
+  ADD PRIMARY KEY (`CardNumber`);
+
+--
 -- Indexes for table `hotels`
 --
 ALTER TABLE `hotels`
@@ -109,6 +160,12 @@ ALTER TABLE `rooms`
 --
 
 --
+-- AUTO_INCREMENT for table `booking`
+--
+ALTER TABLE `booking`
+  MODIFY `BookingNo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `hotels`
 --
 ALTER TABLE `hotels`
@@ -123,6 +180,13 @@ ALTER TABLE `rooms`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `booking`
+--
+ALTER TABLE `booking`
+  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`RoomID`) REFERENCES `rooms` (`RoomID`),
+  ADD CONSTRAINT `fk_credit_card` FOREIGN KEY (`cardNumber`) REFERENCES `creditcard` (`CardNumber`);
 
 --
 -- Constraints for table `hotels`

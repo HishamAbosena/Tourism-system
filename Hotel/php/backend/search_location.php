@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 $searchTerm = $_GET['search'];
 
 // Fetch data from the hotels table based on search term
-$sql = "SELECT * FROM hotels WHERE name LIKE '%$searchTerm%' OR location LIKE '%$searchTerm%'";
+$sql = "SELECT * FROM hotels WHERE location LIKE '%$searchTerm%'";
 $result = $conn->query($sql);
 
 $hotels = array();

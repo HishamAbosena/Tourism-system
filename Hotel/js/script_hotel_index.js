@@ -89,7 +89,19 @@ function createHotelCard(hotel) {
 // Search and Filter functionality
 document.getElementById('searchInput').addEventListener('input', function() {
     const searchTerm = this.value.trim().toLowerCase();
-    fetch(`../php/backend/search_hotels.php?search=${searchTerm}`)
+    fetch(`../php/backend/search_location.php?search=${searchTerm}`)
+        .then(response => response.json())
+        .then(data => {
+            displayHotels(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+// Search and Filter functionality
+document.getElementById('searchLocation').addEventListener('input', function() {
+    const searchTerm = this.value.trim().toLowerCase();
+    fetch(`../php/backend/search_location.php?search=${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             displayHotels(data);
